@@ -19,17 +19,17 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
 
   El cual parece que es debido a que hay que instalar el servicio en los nodos de nfs-utils y en Minikube no es posible.
 
-  **Es necesario habilitar e instalar  ingress en minikube
-  ** Se habilita y configura servicio ingress para acceder por builder.localhost.com
-  ** Se configuran liveness y readiness, se comprueba que no hay eventos de ellos en el microservicio (añadir initialDelaySeconds: 60)
+  **Es necesario habilitar e instalar  ingress en minikube.
+  ** Se habilita y configura servicio ingress para acceder por builder.localhost.com.
+  ** Se configuran liveness y readiness, se comprueba que no hay eventos de ellos en el microservicio (añadir initialDelaySeconds: 60).
   ** se configuran los limites solicitados:
           resources:
-    requests:
-      cpu: "500m"
-      memory: "512Mi"
-    limits:
-      cpu: "2000m"
-      memory: "1.5Gi"
+           requests:
+              cpu: "500m"
+               memory: "512Mi"
+            limits:
+                  cpu: "2000m"
+                  memory: "1.5Gi"
 
       
   ## Parte: Componente api-builder
