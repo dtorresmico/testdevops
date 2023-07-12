@@ -48,4 +48,6 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
   En el Helm se añade la creaccion de un secret para el pass de apitoken para que sea consumida el en fichero values_custom.yaml
 
   Se configura ingress para acceder a la url api-builder.localhost.com
+
+  Faltaria crear un index.html con un codigo para desde ahi hacer llamadas a la api.
   
