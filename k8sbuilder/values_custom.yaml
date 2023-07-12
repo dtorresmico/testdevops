@@ -1,0 +1,87 @@
+
+# For FQDN resolving of the controller service. Change this value to match your existing configuration.
+# ref: https://github.com/kubernetes/dns/blob/master/docs/specification.md
+clusterZone: "cluster.local"
+
+# The URL of the Kubernetes API server
+kubernetesURL: "https://192.168.59.103:8443"
+
+renderHelmLabels: true
+
+controller:
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "2000m"
+      memory: "1.5Gi"
+  # For minikube, set this to NodePort, elsewhere use LoadBalancer --> minikube no LoadBalancer integrate
+  # Use ClusterIP if your setup includes ingress controller
+  serviceType: NodePort
+    # Set this path to jenkinsUriPrefix above or use annotations to rewrite path
+    #  path: "jenkinsUriPrefix"
+  ingress:
+    enabled: true
+    paths: []
+    apiVersion: "extensions/v1beta1"
+    labels: {}
+    annotations: {}
+    hostName: builder.localhost.com
+  healthProbes: true
+  probes:
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: '{{ default "" .Values.controller.jenkinsUriPrefix }}/login'
+        port: http
+      periodSeconds: 10
+      timeoutSeconds: 5
+      initialDelaySeconds: 60
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: '{{ default "" .Values.controller.jenkinsUriPrefix }}/login'
+        port: http
+      periodSeconds: 10
+      timeoutSeconds: 5
+      initialDelaySeconds: 60
+  volumes: 
+   - type: Nfs
+     mountPath: /mnt/jenkins_home # Where to mount this directory in our container
+     readOnly: false
+     serverAddress: "192.168.1.22" # IP to our NFS server
+     serverPath: /mnt/shared
+
+  jenkinsHome: "/mnt/jenkins_home"
+  workspaceVolume: 
+  ## NFS example
+   type: Nfs
+   readOnly: false
+   serverAddress: "192.168.1.22" # IP to our NFS server
+   serverPath: /mnt/shared
+
+  additionalPlugins: 
+      - pipeline-utility-steps:2.16.0
+      - oauth-credentials:0.645.ve666a_c332668
+ 
+persistence:
+  enabled: false
+  storageClass:
+  annotations: {}
+  labels: {}
+  accessMode: "ReadWriteOnce"
+  size: "8Gi"
+  volumes:
+  #  - name: nothing
+  #    emptyDir: {}
+  mounts:
+  #  - mountPath: /var/nothing
+  #    name: nothing
+  #    readOnly: true
+  
+  usePodSecurityContext: true
+  runAsUser: 1001
+  fsGroup: 1001
+  runAsNonRoot: false
+

@@ -1,0 +1,87 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1316.vd2290d3341a_f">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2141.v5402e818a_779"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2141.v5402e818a_779">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@3697.vb_470e454c232">
+    <script>import groovy.json.JsonSlurperClassic
+	pipeline {
+	    agent any
+	    environment {
+            ENV = &quot;test&quot;
+        }
+		stages {
+			stage(&apos;curl&apos;) {
+			  when {
+                environment(name: &quot;ENV&quot;, value: &quot;test&quot;)
+              }
+			    steps {
+			        script {
+			        echo &apos;Building&apos;
+                    def test_var = &quot;Hello, World!&quot;
+                    env.test_var = test_var
+                    sh &apos;java -version&apos;
+                    final String url = &quot;https://api.bigdatacloud.net/data/client-ip&quot;
+                    final String response = sh(script: &quot;curl -s $url&quot;, returnStdout: true).trim()
+                    echo response
+                    env.responsejson = response
+                    }
+			    }
+			}
+			stage(&apos;Json format&apos;) {
+			  when {
+                environment(name: &quot;ENV&quot;, value: &quot;test&quot;)
+              }
+			    steps {
+			        script {
+			        echo &apos;Json Format&apos;
+			        echo &quot;${env.responsejson}&quot;
+                    def jsonObject = readJSON text: &quot;${env.responsejson}&quot;
+                    echo jsonObject.ipString  // you can also use jsonData[&apos;text&apos;]
+                    env.ip = jsonObject.ipString
+			        }
+			    }
+			}
+			stage(&apos;Show ip&apos;) {
+			  when {
+                environment(name: &quot;ENV&quot;, value: &quot;test&quot;)
+              }
+			    steps {
+			        echo &apos;Show ip&apos;
+			        echo &quot;Tu ip externa es: ${env.ip}&quot;
+			    }
+			}
+		}
+	    post {
+	        always {
+	            echo &apos;This will always run&apos;
+	        }
+	        success {
+	            echo &apos;This will run only if successful&apos;
+	        }
+	        failure {
+	            echo &apos;This will run only if failed&apos;
+	        }
+	        unstable {
+	            echo &apos;This will run only if the run was marked as unstable&apos;
+	        }
+	        changed {
+	            echo &apos;This will run only if the state of the Pipeline has changed&apos;
+	            echo &apos;For example, if the Pipeline was previously failing but is now successful&apos;
+	        }
+	    }
+	}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
