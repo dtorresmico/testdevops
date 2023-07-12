@@ -7,11 +7,11 @@ Se ha utilizado la este helm chart : https://github.com/jenkinsci/helm-charts
 Al arrancar el microservicio arranca el servicio Jenkis al cual podemos acceder mediante la url builder.localhost.com
 Se creo una Pipeline que consta de tres Stages:
 
-1.Stage curl: Hace un Get a una Url y obiente un Json
+1. Stage curl: Hace un Get a una Url y obiente un Json
 
-2.Stage Json format: Del fichero Json obtiene un valor y guarada en una variable
+2. Stage Json format: Del fichero Json obtiene un valor y guarada en una variable
 
-3.Stage Show IP: Muestra valor de esa variable
+3. Stage Show IP: Muestra valor de esa variable
 
 Se probo con volumen persistente pero se ha dejado configurado con un volumen NFS de tal manera que cualquier microservicio de cualquier AKS pueda acceder a la configuracion. Problema es que con Minikube al montar este tipo de volumenes daba este error:
 
@@ -45,7 +45,7 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
                          exec:
                            command: ["/bin/sh", "-c", "curl -X POST -L -v --user testuser:\"${APITOKEN}\" http://builder.localhost.com/job/dtm/build"]
 
-  En el Helm se añade la creaccion de un configmap con un key:value de la password para que sea consumida el en fichero values_custom.yaml
+  En el Helm se añade la creaccion de un secret para el pass de apitoken para que sea consumida el en fichero values_custom.yaml
 
   Se configura ingress para acceder a la url api-builder.localhost.com
   
