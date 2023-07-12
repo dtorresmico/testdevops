@@ -1,0 +1,144 @@
+# Copyright VMware, Inc.
+# SPDX-License-Identifier: APACHE-2.0
+
+image:
+  registry: docker.io
+  repository: dtorresmico/apache2
+  tag: v1
+
+  pullPolicy: IfNotPresent
+
+configsecret:
+  name: apitoken
+  apitoken: 11d6cea2d64f15498fb4ac99807777a17a
+  user: testuser
+
+git:
+  registry: docker.io
+  repository: bitnami/git
+  tag: 2.41.0-debian-11-r11
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+replicaCount: 1
+
+htdocsConfigMap: "httpdocs"
+##htdocsPVC: "httpdocs"
+vhostsConfigMap: ""
+
+httpdConfConfigMap: ""
+podLabels: {}
+podAnnotations: {}
+
+hostAliases:
+  ## Necessary for apache-exporter to work
+  ##
+  - ip: "127.0.0.1"
+    hostnames:
+      - "status.localhost"
+  - ip: "192.168.59.105"
+    hostnames:
+      - "builder.localhost.com"
+  - ip: "192.168.59.105"
+    hostnames:
+      - "api-builder.localhost.com"
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+  runAsNonRoot: true
+
+resources:
+  ## Example:
+  ## limits:
+  ##   cpu: 100m
+  ##   memory: 128Mi
+  limits: {}
+  ## Examples:
+  ## requests:
+  ##   cpu: 100m
+  ##   memory: 128Mi
+ 
+
+
+containerPorts:
+  http: 8080
+  https: 8443
+
+service:
+  type: LoadBalancer
+  ports:
+    http: 8081
+    https: 8082
+
+  nodePorts:
+    http: ""
+    https: ""
+  clusterIP: ""
+  ##loadBalancerIP: "192.168.1.78"
+
+  
+command:  
+  - /opt/bitnami/scripts/apache/run.sh
+args: []
+
+##extraEnvVarsCM: "htdocs"
+
+extraEnvVarsSecret: "apitoken"
+
+lifecycleHooks: 
+ Example:
+ postStart:
+     exec:
+       command: ["/bin/sh", "-c", "curl -X POST -L -v --user testuser:\"${APITOKEN}\" http://builder.localhost.com/job/dtm/build"]
+
+
+ingress:
+  ## @param ingress.enabled Enable ingress record generation for Apache
+  ##nginx.ingress.kubernetes.io/rewrite-target: /$1
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: rewrite
+  selfSigned: false
+  pathType: ImplementationSpecific
+  apiVersion: ""
+  ingressClassName: 
+  hostname: api-builder.localhost.com
+  ##path: 
+  annotations: {}
+  extraRules:
+  - host: "api-builder.localhost.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /build
+        backend:
+          service:
+            name: apache-server
+            port:
+              number: 8081
+  - host: "api-builder.localhost.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: apache-server
+            port:
+              number: 8081
+  hosts: []
+
+  extraHosts: []
+  extraPaths: []
+  secrets: []
+
+ 
+
+

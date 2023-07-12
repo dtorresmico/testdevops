@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configname.name }}
+  namespace: {{ .Release.Namespace | quote }}
+data:
+   {{ .Values.configname.APINAME }} : {{ .Values.configname.APITOKEN }}
