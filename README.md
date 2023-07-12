@@ -34,9 +34,9 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
       
   ## Parte: Componente api-builder
   Directorios k8sbuilder, fichero values_custom.
-  Se ha utilizado la este helm chart: https://github.com/bitnami/charts/tree/main/bitnami/apache
-  Se expone aplicacion en puerto 8081
-  Se añade el comando curl en la imagen mediante docker
+  Se ha utilizado la este helm chart: https://github.com/bitnami/charts/tree/main/bitnami/apache.
+  Se expone aplicacion en puerto 8081.
+  Se añade el comando curl en la imagen mediante docker.
   Al iniciar el microservicio realiza una llamada apirest al microservicio de Jenkis y ejecuta una pipeline llamada "dtm" con el usuario testuser:
 
               lifecycleHooks: 
