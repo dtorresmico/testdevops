@@ -1,0 +1,19 @@
+FROM bitnami/apache:latest
+
+USER root
+# RUN commands
+
+
+SHELL ["/bin/bash","-c"]
+# Install required system packages and dependencies
+RUN apt-get update && apt-get upgrade -y curl && \
+    rm -r /var/lib/apt/lists /var/cache/apt/archives
+RUN chmod g+rwX /opt/bitnami
+
+
+RUN /opt/bitnami/scripts/apache/postunpack.sh
+
+WORKDIR /app
+
+ENTRYPOINT [ "/opt/bitnami/scripts/apache/entrypoint.sh" ]
+CMD [ "/opt/bitnami/scripts/apache/run.sh" ]
