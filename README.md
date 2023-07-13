@@ -9,7 +9,7 @@ Se creo una Pipeline que consta de tres Stages:
 
 1. Stage curl: Hace un Get a una Url y obiente un Json
 
-2. Stage Json format: Del fichero Json obtiene un valor y guarada en una variable
+2. Stage Json format: Del fichero Json obtiene un valor y guarda en una variable
 
 3. Stage Show IP: Muestra valor de esa variable
 
@@ -51,5 +51,6 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
 
   Se configura ingress para acceder a la url api-builder.localhost.com
 
-  Se crea un index.html personalizado con un codigo para desde ahi hacer llamadas a la api(no funciona, revisar funcion javascript). Se ha configurado para que use en values_custom.yaml un custom htdocs con contenido statico.
+  Se crea un index.html personalizado con un codigo para desde ahi hacer llamadas a la api con un boton (no funciona, revisar funcion javascript). Se ha configurado para que use en values_custom.yaml un custom htdocs con contenido statico.
+  ![Screenshot](evidencias/call_web_api_builder.jpg)
   
