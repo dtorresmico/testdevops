@@ -67,5 +67,5 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
   Se configura ingress para acceder a la url api-builder.localhost.com
 
   Se crea un index.html personalizado con un codigo para desde ahi hacer llamadas a la api con un boton (no funciona, revisar funcion javascript). Se ha configurado para que use en values_custom.yaml un custom htdocs con contenido statico.
-  ![Screenshot](evidencias/call_web_api_builder.jpg)
-  
+ 
+![call_web_api_builder2](https://github.com/dtorresmico/testdevops/assets/78276509/e65db220-7fe1-46c2-b6b4-8353a5d7cd6f)
