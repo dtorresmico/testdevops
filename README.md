@@ -23,6 +23,8 @@ Se probo con volumen persistente pero se ha dejado configurado con un volumen NF
   ** Se habilita y configura servicio ingress para acceder por builder.localhost.com.
   ** Se configuran liveness y readiness, se comprueba que no hay eventos de ellos en el microservicio (añadir initialDelaySeconds: 60).
   Se configuran los limites solicitados:
+         
+          
           resources:
            requests:
               cpu: "500m"
