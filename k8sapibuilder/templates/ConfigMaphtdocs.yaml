@@ -5,8 +5,31 @@ metadata:
   namespace: default
 data:
   index.html: |
-    <html>
-    <h1>Welcome</h1>
-    </br>
-    <h1>Hi! This is a configmap Index file </h1>
-    </html
+<!DOCTYPE html>
+<html>
+    <script>
+    
+    function RunJenkinsJob() {
+        
+		var xhr = new XMLHttprequest();
+		var authorizationbasic = window.btoa("username:token");
+		xhr.onreadystatechange = function() {
+			if(this.readyState == 4)
+		{
+         console.log(this.status);
+		}
+};
+		xhr.open("POST", "http://testuser:11b62eee8ec3959ba47fcbfeaaa8771e41@localhost:8080/job/New_Test/build?token=Datacreation", true);
+		xhr.setRequestHeader('Authorization','Basic ' + authorizationbasic)
+		xhr.send();
+        
+    }
+    
+    </script>
+    <head>
+        <style>body{background-color:#d0e4fe;}h1{color:orange;text-align:center;}p{font-family:"Times New Roman";font-size:20px;}</style>
+    </head>
+    <body>
+
+    </body>
+    </html>
